@@ -12,4 +12,7 @@ class Canvas(QtGui.QGraphicsView):
         self.setAcceptDrops(True)
         
     def dropEvent(self, event):
-        print(event)
+        print(event.mimeData().text())
+        
+    def dragEnterEvent(self, event):
+        event.accept()

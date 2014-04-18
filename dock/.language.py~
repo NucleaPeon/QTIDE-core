@@ -23,7 +23,7 @@ class LanguageDock(QtGui.QDockWidget):
                               os.path.dirname(__file__), 'folder-development.png'))
         self.droppables = QtGui.QWidget()
         self.droppables.setLayout(QtGui.QVBoxLayout())
-        self.c = dock.droppable.Droppable()
+        self.c = dock.droppable.Droppable(pixmap = self.pixmap)
         self.c.mime.setText("Class")
         self.c.mime.setImageData(self.pixmap)
         self.c.setPixmap(self.pixmap)

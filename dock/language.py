@@ -31,4 +31,4 @@ class LanguageDock(QtGui.QDockWidget):
         self.layout.addWidget(self.droppables)
         self.layout.insertStretch(-1)
         
-        
+    

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Language name="Python">
+    <Object type="Namespace">
+        <accept>
+            <objecttype type="Class" />
+            <objecttype type="Function" />
+            <objecttype type="Variable" />
+        </accept>
+        <refuse default="yes" > <!-- Any other non-recognized Objects will be refused -->
+            <objecttype type="Namespace" />
+        </refuse>
+    </Object>
+</Language>
