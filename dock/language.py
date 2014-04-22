@@ -38,13 +38,18 @@ class LanguageDock(QtGui.QDockWidget):
             langwidget.setLayout(QtGui.QVBoxLayout())
             layout.addWidget(QtGui.QLabel(l.get('Language') + ":"))
             for obj in l.get('Objects'):
+                entry = QtGui.QWidget()
+                entry.setLayout(QtGui.QHBoxLayout())
                 d = dock.droppable.Droppable(pixmap = self.pixmap)
                 if obj.get('type', None) is None:
                     continue
                 d.mime.setText(obj.get('type'))
                 d.mime.setImageData(self.pixmap)
                 d.setPixmap(self.pixmap)
-                langwidget.layout().addWidget(d)
+                entry.layout().addWidget(d)
+                entry.layout().addWidget(QtGui.QLabel(obj.get('type')))
+                entry.layout().insertStretch(-1)
+                langwidget.layout().addWidget(entry)
             layout.addWidget(langwidget)
         
         for lang in language:

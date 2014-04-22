@@ -20,4 +20,8 @@
             <objecttype type="Namespace" />
         </refuse>
     </Object>
+    <Object type="Function">
+    </Object>
+    <Object type="Variable">
+    </Object>
 </Language>
