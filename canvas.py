@@ -8,8 +8,11 @@ from PyQt4 import QtGui, QtCore
 class Canvas(QtGui.QGraphicsView):
     
     def __init__(self):
-        super(Canvas, self).__init__(Scene())
+        super(Canvas, self).__init__()
+        self.scene = Scene(QtCore.QRectF(self.contentsRect()))
+        self.setScene(self.scene)
         self.setAcceptDrops(True)
+        
         
     def dropEvent(self, event):
         print(event.mimeData().text())
@@ -17,11 +20,25 @@ class Canvas(QtGui.QGraphicsView):
     def dragEnterEvent(self, event):
         event.accept()
         
+    def mouseReleaseEvent(self, event):
+        print(event.pos())
+        print(self.contentsRect())
+        
+    def resizeEvent(self, event):
+        self.scene.setSceneRect(QtCore.QRectF(QtCore.QPointF(0, 0),
+                                              QtCore.QSizeF(event.size())))
+        
         
 class Scene(QtGui.QGraphicsScene):
     
-    def __init__(self):
-        super(Scene, self).__init__()
+    #TODO: set font
+    
+    def __init__(self, rect):
+        super(Scene, self).__init__(rect)
+        x = self.sceneRect().width()
+        y = self.sceneRect().height()
+        print("x: {}, y: {}".format(x, y))
+        self.addLine(0, 0, x, y)
         
     def dropEvent(self, event):
         print(event)
@@ -42,3 +59,10 @@ class Scene(QtGui.QGraphicsScene):
         if source:
             event.setDropAction(QtCore.Qt.CopyAction)
             event.accept()
+
+    def drawGrid(self):
+        '''
+        Recreates a grid onto the scene.
+        '''
+        pass
+        
