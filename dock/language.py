@@ -5,6 +5,7 @@
 
 from PyQt4 import QtGui
 import dock.droppable
+import languages.langread
 
 import os
 
@@ -21,14 +22,34 @@ class LanguageDock(QtGui.QDockWidget):
         self.widget.setLayout(self.layout)
         self.pixmap = QtGui.QPixmap(os.path.join(os.getcwd(),
                               os.path.dirname(__file__), 'folder-development.png'))
-        self.droppables = QtGui.QWidget()
-        self.droppables.setLayout(QtGui.QVBoxLayout())
-        self.c = dock.droppable.Droppable(pixmap = self.pixmap)
-        self.c.mime.setText("Class")
-        self.c.mime.setImageData(self.pixmap)
-        self.c.setPixmap(self.pixmap)
-        self.droppables.layout().addWidget(self.c)
-        self.layout.addWidget(self.droppables)
+        
+        # Load test set of usable objects
+        language = languages.langread.read_languages()
+
+        def lang_qt_objects(l, layout=self.layout):
+            '''
+            Appends a series of QtGui objects to the layout,
+            based on contents of l (language) input
+            
+            :Parameters: 
+                - l: language array from read_languages()
+            '''
+            langwidget = QtGui.QWidget()
+            langwidget.setLayout(QtGui.QVBoxLayout())
+            layout.addWidget(QtGui.QLabel(l.get('Language') + ":"))
+            for obj in l.get('Objects'):
+                d = dock.droppable.Droppable(pixmap = self.pixmap)
+                if obj.get('type', None) is None:
+                    continue
+                d.mime.setText(obj.get('type'))
+                d.mime.setImageData(self.pixmap)
+                d.setPixmap(self.pixmap)
+                langwidget.layout().addWidget(d)
+            layout.addWidget(langwidget)
+        
+        for lang in language:
+            lang_qt_objects(lang)
+            
         self.layout.insertStretch(-1)
         
     

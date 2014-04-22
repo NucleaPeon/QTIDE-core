@@ -10,9 +10,15 @@ from PyQt4 import QtGui, QtCore
 LANG_DIR = os.path.join(os.getcwd(), os.path.dirname(__file__))
 
 def read_languages():
+    found_langs = []
+    lang = None
     for d in os.listdir(LANG_DIR):
         if d[-4:].lower() == ".xml":
-            read_file(os.path.join(LANG_DIR, d))
+            lang = read_file(os.path.join(LANG_DIR, d))
+            if not lang is None:
+                found_langs.append(lang)
+            
+    return found_langs
             
 def read_file(filename):
     '''
@@ -27,7 +33,7 @@ def read_file(filename):
     '''        
     doc = etree.parse(filename)
     if not doc.getroot().tag == "Language" or doc.getroot() is None:
-        raise Exception("Language Root Node not found: document is {}".format(doc.getroot()))
+        return None
     # Get <Language>
     node = doc.getroot()
     language = {'Language': node.get('name')}
