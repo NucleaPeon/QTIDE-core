@@ -15,5 +15,40 @@ def read_languages():
             read_file(os.path.join(LANG_DIR, d))
             
 def read_file(filename):
+    '''
+    Reads the xml file containing the language specification
+    
+    :Description:
+        (Detailed Description here)
+        
+    :Parameters:
+        - filename: string path to file to read
+    
+    '''        
     doc = etree.parse(filename)
-    print(doc)
+    if not doc.getroot().tag == "Language" or doc.getroot() is None:
+        raise Exception("Language Root Node not found: document is {}".format(doc.getroot()))
+    # Get <Language>
+    node = doc.getroot()
+    language = {'Language': node.get('name')}
+    # Get <Object>s
+    node = node.findall('Object')
+    nodes = []
+    language['Objects'] = []
+    obj = {} # Reuse dictionary instead of re-creating each time
+    for o in node:
+        # obj will default to {'type' : 'str'}, where str is a language element (Class, etc)
+        obj = dict(o.attrib)
+        
+        for tag in ['accept', 'refuse', 'restrict']:
+            subelement = o.find(tag)
+            if not subelement is None:
+                types = subelement.findall('objecttype')
+                obj[tag] = [t.get('type') for t in types]
+                
+        #obj['accepts'] = str(o.find('accept'))
+        #obj['refuses'] = str(o.find('refuse'))
+        #obj['restrict']  = str(o.find('restrict'))
+        language['Objects'].append(obj)
+        
+    return language

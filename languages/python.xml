@@ -10,4 +10,14 @@
             <objecttype type="Namespace" />
         </refuse>
     </Object>
+    <Object type="Class">
+        <accept>
+            <objecttype type="Class" />
+            <objecttype type="Function" />
+            <objecttype type="Variable" />
+        </accept>
+        <refuse default="yes" >
+            <objecttype type="Namespace" />
+        </refuse>
+    </Object>
 </Language>
