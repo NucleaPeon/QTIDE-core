@@ -17,6 +17,7 @@ class Window(QtGui.QMainWindow):
                 None, QtGui.QApplication.UnicodeUTF8))
         self.setDockOptions(QtGui.QMainWindow.AnimatedDocks)
         self.resize(1000, 600)
-        self.setCentralWidget(canvas.Canvas())
+        self.canvas = canvas.Canvas()
+        self.setCentralWidget(self.canvas)
         self.languagedock = dock.language.LanguageDock()
         self.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.languagedock)
