@@ -27,6 +27,8 @@ class Canvas(QtGui.QGraphicsView):
     def resizeEvent(self, event):
         self.scene.setSceneRect(QtCore.QRectF(QtCore.QPointF(0, 0),
                                               QtCore.QSizeF(event.size())))
+        self.scene.clear()
+        self.scene.drawGrid()
         
         
 class Scene(QtGui.QGraphicsScene):
@@ -37,8 +39,7 @@ class Scene(QtGui.QGraphicsScene):
         super(Scene, self).__init__(rect)
         x = self.sceneRect().width()
         y = self.sceneRect().height()
-        print("x: {}, y: {}".format(x, y))
-        self.addLine(0, 0, x, y)
+        
         
     def dropEvent(self, event):
         print(event)
@@ -64,5 +65,11 @@ class Scene(QtGui.QGraphicsScene):
         '''
         Recreates a grid onto the scene.
         '''
-        pass
+        width = int(self.sceneRect().width())
+        height = int(self.sceneRect().height())
+        
+        for n in range(0, height, 20): # 0 - 822
+            self.addLine(0, n, width, n)
+        for n in range(0, width, 20): # 0 - 596
+            self.addLine(n, 0, n, height)
         
