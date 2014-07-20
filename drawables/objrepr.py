@@ -48,6 +48,8 @@ class Repr(QtGui.QGraphicsRectItem):
         self.w = w
         self.h = h
         self.pen = QtGui.QPen(QtCore.Qt.black, 2, QtCore.Qt.SolidLine) if pen is None else pen
-        self.brush = brush
+        self.setPen(self.pen)
+        self.brush = QtGui.QBrush(QtCore.Qt.SolidPattern) if brush is None else brush
+        self.setBrush(self.brush)
     
     
