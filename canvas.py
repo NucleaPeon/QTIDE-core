@@ -13,11 +13,11 @@ class Canvas(QtGui.QGraphicsView):
 
     def __init__(self):
         super(Canvas, self).__init__()
-        #self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        #self.customContextMenuRequested.connect(self.customContextMenuRequest)
         self.scene = Scene(QtCore.QRectF(self.contentsRect()))
         self.setScene(self.scene)
         self.setAcceptDrops(True)
+        self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.customContextMenuRequest)
 
     @QtCore.pyqtSlot(QtCore.QPoint)
     def customContextMenuRequest(self, qpoint):
@@ -25,13 +25,10 @@ class Canvas(QtGui.QGraphicsView):
         action1 = menu.addAction("Item 1")
         action2 = menu.addAction("Item 2")
         action1.triggered.connect(self.helloWorld)
-        #menu.connect(action1.SIGNAL("triggered()"),
-        #             self.SLOT("helloWorld()"))
+        action2.triggered.connect(self.helloWorld)
 
-        #menu.connect(action2.SIGNAL("triggered()"),
-        #             #self.SLOT("helloWorld()"))
-
-        menu.exec_(qpoint)
+        print(self.mapToGlobal(qpoint))
+        menu.exec_(self.mapToGlobal(qpoint))
 
 
     def dropEvent(self, event):
