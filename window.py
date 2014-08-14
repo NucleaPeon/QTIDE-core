@@ -23,4 +23,7 @@ class Window(QtGui.QMainWindow):
         self.setCentralWidget(self.canvas)
         self.languagedock = dock.language.LanguageDock()
         self.addDockWidget(QtCore.Qt.DockWidgetArea(1), self.languagedock)
-        
+        self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.canvas.customContextMenuRequest)
+
+        # self.setWindowIcon(QtGui.QIcon('web.png'))
