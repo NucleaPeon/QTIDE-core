@@ -35,7 +35,7 @@ Object Representation Drawing
     We can extend functionality around language limitations (for example) by 
     adding <maxlength>50</maxlength> or similar to the name, or to the value
     (ex: limit to max string length to 32-bit system string length even while
-     on 64-bit systems. (not recommended in practice) )
+     on 64-bit systems. )
      
 '''
 
@@ -47,8 +47,8 @@ class Repr(QtGui.QGraphicsRectItem):
         self.y = y
         self.w = w
         self.h = h
-        self.pen = QtGui.QPen(QtCore.Qt.black, 2, QtCore.Qt.SolidLine) if pen is None else pen
-        self.setPen(self.pen)
+        #self.pen = QtGui.QPen(QtCore.Qt.black, 2, QtCore.Qt.SolidLine) if pen is None else pen
+        #self.setPen(self.pen)
         self.brush = QtGui.QBrush(QtCore.Qt.SolidPattern) if brush is None else brush
         self.setBrush(self.brush)
     
