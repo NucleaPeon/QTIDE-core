@@ -1,6 +1,12 @@
 '''
 :Author:
     - Daniel Kettle
+
+:TODO:
+    - Grid must be an overlay on top of scene and not added TO the scene if possible
+    - ItemGroups: Drawables should be in groups: a namespace creates a group from which all classes exist.
+                  Classes contain a group of methods and one of variables.
+                  Methods contain an optional group of variables. etc.
 '''
 
 from PyQt4 import QtGui, QtCore
@@ -22,10 +28,11 @@ class Canvas(QtGui.QGraphicsView):
     @QtCore.pyqtSlot(QtCore.QPoint)
     def customContextMenuRequest(self, qpoint):
         menu = QtGui.QMenu()
-        action1 = menu.addAction("Item 1")
-        action2 = menu.addAction("Item 2")
-        action1.triggered.connect(self.helloWorld)
-        action2.triggered.connect(self.helloWorld)
+        action1 = menu.addAction("Delete")
+        menu.addSeparator()
+        action2 = menu.addAction("Properties")
+        action1.triggered.connect(lambda: self.menuRemove(qpoint))
+        action2.triggered.connect(self.properties)
 
         print(self.mapToGlobal(qpoint))
         menu.exec_(self.mapToGlobal(qpoint))
@@ -55,12 +62,21 @@ class Canvas(QtGui.QGraphicsView):
     def resizeEvent(self, event):
         self.scene.setSceneRect(QtCore.QRectF(QtCore.QPointF(0, 0),
                                               QtCore.QSizeF(event.size())))
-        self.scene.clear()
-        self.scene.drawGrid()
+        # FIXME: Clearing screen on resize destroys all drawn items
+        # self.scene.clear()
+        #self.scene.drawGrid()
+        pass
 
     @QtCore.pyqtSlot()
-    def helloWorld(self):
+    def properties(self):
         print("Hello World")
+
+    @QtCore.pyqtSlot()
+    def menuRemove(self, point, success=print):
+        item = self.scene.itemAt(point)
+        if not item is None:
+            self.scene.removeItem(item)
+            success(item)
 
 
 class Scene(QtGui.QGraphicsScene):
