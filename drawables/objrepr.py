@@ -41,15 +41,17 @@ Object Representation Drawing
 
 class Repr(QtGui.QGraphicsRectItem):
 
-    def __init__(self, x=0, y=0, w=100, h=60, pen=None, brush=None, name=''):
+    def __init__(self, x=0, y=0, w=100, h=60, pen=None, brush=None, name='Foo Bar',
+                 border=False):
         super().__init__(x, y, w, h)
         self.x = x
         self.y = y
         self.w = w
         self.h = h
-        #self.pen = QtGui.QPen(QtCore.Qt.black, 2, QtCore.Qt.SolidLine) if pen is None else pen
-        #self.setPen(self.pen)
+        self.pen = QtGui.QPen(QtCore.Qt.blue, 3, QtCore.Qt.SolidLine) if pen is None else pen
+        if border:
+            self.setPen(self.pen)
         self.brush = QtGui.QBrush(QtCore.Qt.SolidPattern) if brush is None else brush
         self.setBrush(self.brush)
-        self.setToolTip("Foo bar")
+        self.setToolTip(name)
 

@@ -24,6 +24,7 @@ class Canvas(QtGui.QGraphicsView):
         self.setAcceptDrops(True)
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.customContextMenuRequest)
+        self.selectedItem = None # If None, selected item refers to Canvas.
 
     @QtCore.pyqtSlot(QtCore.QPoint)
     def customContextMenuRequest(self, qpoint):
@@ -43,29 +44,50 @@ class Canvas(QtGui.QGraphicsView):
         # Lock to Grid
         remain = int(pos.x() / GRID_WIDTH)
         x = remain * GRID_WIDTH
-        print(x)
         remain = int(pos.y() / GRID_HEIGHT)
         y = remain * GRID_HEIGHT
-        print(y)
         rect = drawables.objrepr.Repr(x=x,
-                                      y=y)
+                                      y=y,
+                                      border=True)
+        if not self.selectedItem is None:
+            if hasattr(self.selectedItem, "pen"):
+                print("Set previously selected item to no pen style")
+                self.selectedItem.pen.setStyle(QtCore.Qt.NoPen)
+
         self.scene.addItem(rect)
+        self.selectedItem = rect
 
     def dragEnterEvent(self, event):
         print("Drag Enter Event {}".format(event))
         event.accept()
 
+    def mousePressEvent(self, event):
+        '''
+        :Description:
+            Adds border to a drawable item to notify user of what is currently
+            selected. Only one thing can be selected at a time. Upon start
+            of application, the entire canvas should be "selected".
+
+            NOTE: Keyboard shortcuts should be applicable to selected items.
+            Example: Typing a word will search all the current items and select
+            the closest thing, or bring up a list of items that can be selected
+            via keyboard.
+            Ctrl or Alt + key, or delete/home/end/pgup/pgdn keys should be able
+            to affect droppables too. TODO.
+
+        '''
+        item = self.scene.itemAt(event.pos())
+        if not item is None:
+            self.selectedItem = item
+
     def mouseReleaseEvent(self, event):
-        print(event.pos())
-        print(self.contentsRect())
+        pass
+        #print(event.pos())
+        #print(self.contentsRect())
 
     def resizeEvent(self, event):
         self.scene.setSceneRect(QtCore.QRectF(QtCore.QPointF(0, 0),
                                               QtCore.QSizeF(event.size())))
-        # FIXME: Clearing screen on resize destroys all drawn items
-        # self.scene.clear()
-        #self.scene.drawGrid()
-        pass
 
     @QtCore.pyqtSlot()
     def properties(self):
@@ -110,6 +132,8 @@ class Scene(QtGui.QGraphicsScene):
     def drawGrid(self):
         '''
         Recreates a grid onto the scene.
+        NOTE: currently unused until it can be in its own layer and be statically drawn
+              onto the scene.
         '''
         width = int(self.sceneRect().width())
         height = int(self.sceneRect().height())
