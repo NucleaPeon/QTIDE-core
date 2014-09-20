@@ -1,13 +1,14 @@
-'''
-:Author:
-    - Daniel Kettle
+''' Contains code that determines contents of droppable representation
+
+Sets the image (pixmap)
+
 '''
 
 from PyQt4 import QtGui, QtCore
 
 class Droppable(QtGui.QLabel):
 
-    def __init__(self, pixmap = None):
+    def __init__(self, pixmap=None):
         super(Droppable, self).__init__()
         self.mime = QtCore.QMimeData()
         self.pixmap = pixmap
@@ -21,7 +22,7 @@ class Droppable(QtGui.QLabel):
         # Create a pixmap of size of self
         if self.pixmap is None:
             self.pixmap = QtGui.QPixmap(self.size())
-            
+
         drag = QtGui.QDrag(self)
         drag.setMimeData(mime)
         drag.setPixmap(self.pixmap)

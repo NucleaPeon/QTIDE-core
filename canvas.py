@@ -32,15 +32,12 @@ class Canvas(QtGui.QGraphicsView):
 
     @QtCore.pyqtSlot(QtCore.QPoint)
     def customContextMenuRequest(self, qpoint):
-        print("Custom Context Menu")
         menu = QtGui.QMenu()
         action1 = menu.addAction("Delete")
         menu.addSeparator()
         action2 = menu.addAction("Properties")
         action1.triggered.connect(lambda: self.menuRemove(qpoint))
         action2.triggered.connect(self.properties)
-
-        print(self.mapToGlobal(qpoint))
         menu.exec_(self.mapToGlobal(qpoint))
 
 
@@ -51,13 +48,12 @@ class Canvas(QtGui.QGraphicsView):
         x = remain * GRID_WIDTH
         remain = int(pos.y() / GRID_HEIGHT)
         y = remain * GRID_HEIGHT
-        rect = drawables.objrepr.Repr(scene=self.scene, x=x, y=y,
+        rect = drawables.objrepr.Repr(event.mimeData().text(),
+                                      scene=self.scene, x=x, y=y,
                                       brush=SELECTED_COLOUR)
-
         if not self.selectedItem is None:
             self.selectedItem.setBrush(UNSELECTED_COLOUR)
             self.updateSceneRect(self.selectedItem.boundingRect())
-
         self.selectedItem = rect
 
     def dragEnterEvent(self, event):

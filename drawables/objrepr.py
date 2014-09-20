@@ -41,16 +41,23 @@ Object Representation Drawing
 
 class Repr(QtGui.QGraphicsRectItem):
 
-    def __init__(self, *args, x=0, y=0, w=100, h=60, brush=None, name='Foo Bar',
+    def __init__(self, obj_repr, *args, x=0, y=0, w=100, h=60, brush=None, name=None,
                   **kwargs):
         super().__init__(x, y, w, h, scene=kwargs.get('scene', None))
         self.x = x
         self.y = y
         self.w = w
         self.h = h
+        self.obj_repr = obj_repr # Object Representation: What is this? A Namespace? Class? Interface?
+        self.name = obj_repr if name is None else name
         self.setFlag(QtGui.QGraphicsItem.ItemIsMovable)
         self.brush = QtGui.QBrush(QtGui.QColor(255, 0, 0, 127),
                                   style=QtCore.Qt.SolidPattern) if brush is None else brush
         self.setBrush(self.brush)
-        self.setToolTip(name)
+        self.setToolTip(self.name)
+
+    def request_name(self):
+        text, ok = QtGui.QInputDialog.getText(self, "Enter {} Name".format(self.obj_repr),
+                                              "Name:")
+        return text
 
