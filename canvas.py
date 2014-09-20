@@ -15,7 +15,11 @@ import drawables.objrepr
 GRID_HEIGHT = 20
 GRID_WIDTH = 20
 
+SELECTED_COLOUR = QtGui.QColor(255, 0, 0, 127)
+UNSELECTED_COLOUR = QtGui.QColor(0, 0, 255, 127)
+
 class Canvas(QtGui.QGraphicsView):
+
 
     def __init__(self):
         super(Canvas, self).__init__()
@@ -28,6 +32,7 @@ class Canvas(QtGui.QGraphicsView):
 
     @QtCore.pyqtSlot(QtCore.QPoint)
     def customContextMenuRequest(self, qpoint):
+        print("Custom Context Menu")
         menu = QtGui.QMenu()
         action1 = menu.addAction("Delete")
         menu.addSeparator()
@@ -46,12 +51,12 @@ class Canvas(QtGui.QGraphicsView):
         x = remain * GRID_WIDTH
         remain = int(pos.y() / GRID_HEIGHT)
         y = remain * GRID_HEIGHT
-        rect = drawables.objrepr.Repr(scene=self.scene, x=x, y=y)
+        rect = drawables.objrepr.Repr(scene=self.scene, x=x, y=y,
+                                      brush=SELECTED_COLOUR)
 
         if not self.selectedItem is None:
-            if hasattr(self.selectedItem, "pen"):
-                self.selectedItem.setBrush(QtGui.QBrush(QtGui.QColor(0, 0, 255, 127)))
-                self.updateSceneRect(self.selectedItem.boundingRect())
+            self.selectedItem.setBrush(UNSELECTED_COLOUR)
+            self.updateSceneRect(self.selectedItem.boundingRect())
 
         self.selectedItem = rect
 
@@ -72,10 +77,12 @@ class Canvas(QtGui.QGraphicsView):
             via keyboard.
             Ctrl or Alt + key, or delete/home/end/pgup/pgdn keys should be able
             to affect droppables too. TODO.
-
         '''
+        print("Mouse Press Event")
         item = self.scene.itemAt(event.pos())
-        if not item is None:
+        if not item is None and not item == self.selectedItem:
+            item.setBrush(SELECTED_COLOUR)
+            self.selectedItem.setBrush(UNSELECTED_COLOUR)
             self.selectedItem = item
 
     def mouseReleaseEvent(self, event):
