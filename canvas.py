@@ -46,15 +46,13 @@ class Canvas(QtGui.QGraphicsView):
         x = remain * GRID_WIDTH
         remain = int(pos.y() / GRID_HEIGHT)
         y = remain * GRID_HEIGHT
-        rect = drawables.objrepr.Repr(x=x,
-                                      y=y,
-                                      border=True)
+        rect = drawables.objrepr.Repr(scene=self.scene, x=x, y=y)
+
         if not self.selectedItem is None:
             if hasattr(self.selectedItem, "pen"):
-                print("Set previously selected item to no pen style")
-                self.selectedItem.pen.setStyle(QtCore.Qt.NoPen)
+                self.selectedItem.setBrush(QtGui.QBrush(QtGui.QColor(0, 0, 255, 127)))
+                self.updateSceneRect(self.selectedItem.boundingRect())
 
-        self.scene.addItem(rect)
         self.selectedItem = rect
 
     def dragEnterEvent(self, event):
@@ -140,5 +138,6 @@ class Scene(QtGui.QGraphicsScene):
 
         for n in range(0, height, GRID_HEIGHT): # 0 - 822
             self.addLine(0, n, width, n, pen=self.gridPen)
+
         for n in range(0, width, GRID_WIDTH): # 0 - 596
             self.addLine(n, 0, n, height, pen=self.gridPen)
