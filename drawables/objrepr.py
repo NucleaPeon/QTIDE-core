@@ -40,17 +40,19 @@ Object Representation Drawing
 '''
 
 class Repr(QtGui.QGraphicsRectItem):
+    '''
+    :Description:
+        This object represents a structural component of a computer language
 
-    def __init__(self, obj_repr, *args, x=0, y=0, w=100, h=60, brush=None, name=None,
+        It is a square that contains rules on how to behave with other structural
+        components as well as appearance on the scene and view.
+    '''
+
+    def __init__(self, obj_repr, rect, *args, brush=None, name=None,
                   **kwargs):
-        super().__init__(x, y, w, h, scene=kwargs.get('scene', None))
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
+        super().__init__(rect, scene=kwargs.get('scene', None))
         self.obj_repr = obj_repr # Object Representation: What is this? A Namespace? Class? Interface?
         self.name = obj_repr if name is None else name
-        self.setFlag(QtGui.QGraphicsItem.ItemIsMovable)
         self.brush = QtGui.QBrush(QtGui.QColor(255, 0, 0, 127),
                                   style=QtCore.Qt.SolidPattern) if brush is None else brush
         self.setBrush(self.brush)
@@ -60,4 +62,3 @@ class Repr(QtGui.QGraphicsRectItem):
         text, ok = QtGui.QInputDialog.getText(self, "Enter {} Name".format(self.obj_repr),
                                               "Name:")
         return text
-
