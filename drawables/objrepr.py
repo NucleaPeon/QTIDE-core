@@ -1,4 +1,5 @@
 from PyQt4 import QtGui, QtCore
+import drawables.drawable
 
 '''
 Object Representation Drawing
@@ -39,7 +40,7 @@ Object Representation Drawing
 
 '''
 
-class Repr(QtGui.QGraphicsRectItem):
+class Repr(drawables.drawable.Drawable):
     '''
     :Description:
         This object represents a structural component of a computer language
@@ -50,15 +51,14 @@ class Repr(QtGui.QGraphicsRectItem):
 
     def __init__(self, obj_repr, rect, *args, brush=None, name=None,
                   **kwargs):
-        super().__init__(rect, scene=kwargs.get('scene', None))
+        super().__init__(rect, kwargs.get('scene', None))
         self.obj_repr = obj_repr # Object Representation: What is this? A Namespace? Class? Interface?
         self.name = obj_repr if name is None else name
-        self.brush = QtGui.QBrush(QtGui.QColor(255, 0, 0, 127),
-                                  style=QtCore.Qt.SolidPattern) if brush is None else brush
-        self.setBrush(self.brush)
         self.setToolTip(self.name)
+        self.setAcceptDrops(True)
 
     def request_name(self):
         text, ok = QtGui.QInputDialog.getText(self, "Enter {} Name".format(self.obj_repr),
                                               "Name:")
         return text
+
