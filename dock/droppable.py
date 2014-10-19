@@ -5,6 +5,7 @@ Sets the image (pixmap)
 '''
 
 from PyQt4 import QtGui, QtCore
+import json
 
 class Droppable(QtGui.QLabel):
 

@@ -20,7 +20,14 @@ class Drawable(QtGui.QGraphicsRectItem):
                                   if brush is None else brush
         self.setBrush(self.brush)
         #self.setPen()
-        self.components = []
+        '''
+        Data is the information retrieved from the xml file that is read in,
+        it contains what objects can be dropped onto this one, and what this
+        one can be dropped onto.
+        '''
+        self.data = {}
+        ''' replace with scene.createItemGroup or addToGroup '''
+        self.objects = QtGui.QGraphicsItemGroup()
 
     def consolidate(self):
         '''

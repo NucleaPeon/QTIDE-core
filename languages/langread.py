@@ -33,6 +33,7 @@ def read_file(filename):
     doc = etree.parse(filename)
     if not doc.getroot().tag == "Language" or doc.getroot() is None:
         return None
+    
     # Get <Language>
     node = doc.getroot()
     language = {'Language': node.get('name')}

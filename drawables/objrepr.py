@@ -52,8 +52,8 @@ class Repr(drawables.drawable.Drawable):
     def __init__(self, obj_repr, rect, *args, brush=None, name=None,
                   **kwargs):
         super().__init__(rect, kwargs.get('scene', None))
-        self.obj_repr = obj_repr # Object Representation: What is this? A Namespace? Class? Interface?
-        self.name = obj_repr if name is None else name
+        self.data = obj_repr # dict with data
+        self.name = obj_repr.get('type') if name is None else name
         self.setToolTip(self.name)
         self.setAcceptDrops(True)
 
